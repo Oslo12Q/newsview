@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- 引入 ECharts 文件 -->
+    <script src="../static/echarts.min.js"></script>
+	<title>INFOVIEW-TIMEVIEW</title>
+</head>
+<body>
+	<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width:1200px;height:600px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main')),jsDate;
+		function init(){
+			var ajax = new XMLHttpRequest();
+							ajax.open('get','/time_data/');
+							ajax.send();
+							ajax.onreadystatechange = function (data) {
+							if (ajax.status==200) {
+								var arr=JSON.parse(ajax.responseText);
+							　  d=arr.successResult;//输入相应的内容
+			for(var i=0;i<d.length;i++){
+				console.log(i)
+			d[i][0]= new Date(Date.parse(d[i][0].replace(/-/g, "/")));
+			}
+			var option = {
+				title : {
+					text : 'TIMEVIEW',
+					left : 'center'
+				},
+				tooltip : {
+					trigger: 'item',
+					formatter : function (params) {
+						var date = new Date(params.value[0]);
+						data = date.getFullYear() + '-'
+							   + (date.getMonth() + 1) + '-'
+							   + date.getDate() + ' '
+							   + date.getHours() + ':'
+							   + date.getMinutes();
+						return data + '<br/>'
+							   + params.value[1] + ', ' 
+							   + params.value[2];
+					}
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						mark : {show: true},
+						dataView : {show: true, readOnly: false},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				dataZoom: {
+					show: true,
+					start : 0
+				},
+				legend : {
+					data : ['不同时间新闻发布数量'],
+					top : 30
+				},
+				grid: {
+					y2: 80
+				},
+				xAxis : [
+					{
+						type : 'time',
+						splitNumber:10
+					}
+				],
+				yAxis : [
+					{
+						type : 'value',
+					}
+				],
+				series : [
+					{
+						name: '不同时间新闻发布数量',
+						type: 'line',
+						smooth: true,
+						showAllSymbol: true,
+						symbolSize: function (value){
+							return Math.round(value[2]/10) + 2;
+						},
+						markPoint: {
+									  data: [{
+										  type: 'max',
+										  name: '最大值'
+									  }, {
+										  type: 'min',
+										  name: '最小值'
+									  }]
+								  },
+						data: d
+					}
+				]
+			};
+		　　}else{
+			alert('请求出错');
+		}
+		myChart.setOption(option);			
+		}
+		}
+		init()
+	</script>
+</body>
+</html>

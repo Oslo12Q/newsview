@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- 引入 ECharts 文件 -->
+    <script src="../static/echarts.min.js"></script>
+	<title>INFOVIEW-TOPICVIEW</title>
+</head>
+<body>
+ <div id="main" style="width:1000px;height:600px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+		var option = {
+		
+					title : {
+						text: 'TOPICVIEW',
+						subtext: '不同时间矿产资源主题分布',
+						x:'center'
+					},
+					tooltip : {
+						trigger: 'item',
+						formatter: "{b} : {c} ({d}%)"
+					},
+					legend: {
+						type: 'scroll',
+						orient: 'vertical',
+						right: 10,
+						top: 100,
+						bottom: 150,
+						data: ['中国矿产','采矿技术','地址与勘探','矿床地质','金属矿山','铜矿','有色金属','矿山机械','云南地址','新疆有色金属','矿物学报','现代矿业','中国地质大学','中南大学','国外选矿']
+					},
+					toolbox: {
+						show : true,
+						feature : {
+							mark : {show: true},
+							dataView : {show: true, readOnly: false},
+							magicType : {
+								show: true, 
+								type: ['pie', 'funnel'],
+								option: {
+									funnel: {
+										x: '25%',
+										width: '50%',
+										funnelAlign: 'left',
+										max: 1700
+									}
+								}
+							},
+							restore : {show: true},
+							saveAsImage : {show: true}
+						}
+					},
+					series : [
+						{
+							type:'pie',
+							center: ['50%', '45%'],
+							radius: '50%',
+							data:[
+								{value: 128,  name:'中国矿产'},
+								{value: 64,  name:'采矿技术'},
+								{value: 32,  name:'地址与勘探'},
+								{value: 16,  name:'矿床地质'},
+								{value: 8, name:'金属矿山'},
+								{value: 128,  name:'铜矿'},
+								{value: 64,  name:'有色金属'},
+								{value: 32,  name:'矿山机械'},
+								{value: 16,  name:'云南地址'},
+								{value: 8, name:'新疆有色金属'},
+								{value: 128,  name:'矿物学报'},
+								{value: 64,  name:'现代矿业'},
+								{value: 32,  name:'中国地质大学'},
+								{value: 16,  name:'中南大学'},
+								{value: 8, name:'国外选矿'}
+								
+							]
+						}
+					]
+			
+		};
+	myChart.setOption(option);	
+	</script> 
+</body>
+</html>
